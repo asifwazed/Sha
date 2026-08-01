@@ -101,6 +101,53 @@
       border-color: #ec4899;
       color: white;
     }
+        /* Portfolio Masonry Grid */
+    .portfolio-section {
+      width: 100%;
+      max-width: 900px;
+      padding: 40px 20px;
+      box-sizing: border-box;
+    }
+    
+    .section-title {
+      font-size: 24px;
+      margin-bottom: 24px;
+      border-left: 4px solid #ec4899;
+      padding-left: 12px;
+    }
+
+    .masonry-grid {
+      column-count: 2; /* 2 columns for phones */
+      column-gap: 16px;
+    }
+
+    /* 3 columns for wider screens (Tablets/Laptops) */
+    @media (min-width: 600px) {
+      .masonry-grid {
+        column-count: 3;
+      }
+    }
+
+    .grid-item {
+      display: inline-block;
+      width: 100%;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      background-color: #1f2937;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .grid-item:hover {
+      transform: scale(1.03);
+    }
+
+    .grid-item img {
+      width: 100%;
+      display: block;
+      /* Using a placeholder gray background while images load */
+      background-color: #374151; 
+    }
   </style>
 </head>
 <body>
@@ -120,6 +167,30 @@
     <div class="buttons">
       <button class="btn-primary">View Portfolio</button>
       <button class="btn-secondary">Hire Me</button>
+    </div>
+  </div>
+  <div class="portfolio-section">
+    <h2 class="section-title">Recent Work</h2>
+    <div class="masonry-grid">
+      <!-- Placeholder Items of different heights to show the Pinterest effect -->
+      <div class="grid-item">
+        <img src="https://via.placeholder.com/400x600/ec4899/ffffff?text=Design+1" alt="Design 1">
+      </div>
+      <div class="grid-item">
+        <img src="https://via.placeholder.com/400x400/8b5cf6/ffffff?text=Design+2" alt="Design 2">
+      </div>
+      <div class="grid-item">
+        <img src="https://via.placeholder.com/400x700/3b82f6/ffffff?text=Design+3" alt="Design 3">
+      </div>
+      <div class="grid-item">
+        <img src="https://via.placeholder.com/400x500/10b981/ffffff?text=Design+4" alt="Design 4">
+      </div>
+      <div class="grid-item">
+        <img src="https://via.placeholder.com/400x800/f59e0b/ffffff?text=Design+5" alt="Design 5">
+      </div>
+      <div class="grid-item">
+        <img src="https://via.placeholder.com/400x450/ef4444/ffffff?text=Design+6" alt="Design 6">
+      </div>
     </div>
   </div>
 
