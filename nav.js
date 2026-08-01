@@ -4,13 +4,12 @@ document.addEventListener("DOMContentLoaded", () => {
       <div style="color: #ec4899; font-weight: bold; font-size: 20px; letter-spacing: 2px;">STUDIO SHA.</div>
       <div style="display: flex; gap: 15px; flex-wrap: wrap;">
         <a href="index.html" style="color: #d1d5db; text-decoration: none; font-weight: 500;">Home</a>
-        <a href="feed.html" style="color: #d1d5db; text-decoration: none; font-weight: 500;">Feed</a>
-        <a href="shop.html" style="color: #d1d5db; text-decoration: none; font-weight: 500;">Shop</a>
-        <a href="hire.html" style="color: #d1d5db; text-decoration: none; font-weight: 500;">Hire Me</a>
+        <a href="explore.html" style="color: #d1d5db; text-decoration: none; font-weight: 500; transition: color 0.3s;">Explore</a>
+        <a href="shop.html" style="color: #d1d5db; text-decoration: none; font-weight: 500; transition: color 0.3s;">Shop</a>
+        <a href="hire.html" style="color: #d1d5db; text-decoration: none; font-weight: 500; transition: color 0.3s;">Hire Me</a>
       </div>
     </nav>
   `;
   
-  // Finds the empty div in our HTML files and injects the menu
   document.getElementById("nav-container").innerHTML = navHTML;
 });
