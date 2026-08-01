@@ -3,20 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Studio Sha | Home</title>
+  <title>Sha's Designs | Home</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* ========================================== */
-    /* ANIMATIONS                                 */
-    /* ========================================== */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    @keyframes gradientPulse {
+      0% { box-shadow: 0 0 15px rgba(236, 72, 153, 0.4); }
+      50% { box-shadow: 0 0 35px rgba(236, 72, 153, 0.8); }
+      100% { box-shadow: 0 0 15px rgba(236, 72, 153, 0.4); }
     }
     @keyframes float {
       0% { transform: translateY(0px) scale(1); }
@@ -25,9 +22,6 @@
       100% { transform: translateY(0px) scale(1); }
     }
 
-    /* ========================================== */
-    /* HERO LAYOUT & BACKGROUND                   */
-    /* ========================================== */
     .hero-wrapper {
       position: relative;
       width: 100%;
@@ -35,11 +29,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden; /* Keeps the glowing blobs inside */
+      overflow: hidden;
       margin-top: 20px;
     }
 
-    /* Floating Ambient Blobs */
     .blob {
       position: absolute;
       filter: blur(90px);
@@ -47,42 +40,19 @@
       opacity: 0.5;
       animation: float 12s infinite ease-in-out;
     }
-    .blob-1 {
-      width: 300px;
-      height: 300px;
-      background: var(--primary-color);
-      top: 10%;
-      left: 10%;
-      border-radius: 50%;
-    }
-    .blob-2 {
-      width: 250px;
-      height: 250px;
-      background: #8b5cf6; /* Accent Purple */
-      bottom: 10%;
-      right: 15%;
-      border-radius: 50%;
-      animation-delay: -6s; /* Makes them float out of sync */
-    }
+    .blob-1 { width: 300px; height: 300px; background: var(--primary-color); top: 10%; left: 10%; border-radius: 50%; }
+    .blob-2 { width: 250px; height: 250px; background: #8b5cf6; bottom: 10%; right: 15%; border-radius: 50%; animation-delay: -6s; }
 
-    /* ========================================== */
-    /* GLASSMORPHISM CARD                         */
-    /* ========================================== */
     .hero {
       text-align: center;
       max-width: 700px;
       padding: 50px 30px;
       z-index: 1;
-      
-      /* Frosted Glass Effect */
       background: rgba(31, 41, 55, 0.4);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 24px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-      
-      /* Initial state before animation */
       opacity: 0;
       animation: fadeInUp 0.8s ease-out forwards;
     }
@@ -95,86 +65,96 @@
       animation: fadeInUp 0.8s ease-out 0.2s forwards;
     }
 
-    /* Shifting Text Gradient */
-    .highlight-animated {
-      background: linear-gradient(270deg, var(--primary-color), #8b5cf6, var(--primary-color));
-      background-size: 200% 200%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: gradientShift 4s ease infinite;
-      font-weight: 800;
+    .highlight {
+      color: var(--primary-color);
     }
 
     .hero p {
       color: var(--text-main);
       font-size: 18px;
-      margin-bottom: 35px;
+      margin-bottom: 40px;
       line-height: 1.6;
       opacity: 0;
       animation: fadeInUp 0.8s ease-out 0.4s forwards;
     }
 
     /* ========================================== */
-    /* ENHANCED BUTTONS                           */
+    /* NEW ACTION LAYOUT                          */
     /* ========================================== */
-    .hero-actions {
+    .primary-action {
+      opacity: 0;
+      animation: fadeInUp 0.8s ease-out 0.6s forwards;
+      margin-bottom: 30px;
+    }
+    
+    /* Massive Glowing Explore Button */
+    .btn-explore {
+      display: inline-block;
+      background: linear-gradient(90deg, #ec4899, #8b5cf6);
+      color: white;
+      font-size: 22px;
+      font-weight: 800;
+      padding: 16px 40px;
+      border-radius: 50px;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      animation: gradientPulse 3s infinite;
+      transition: transform 0.3s ease;
+    }
+    .btn-explore:hover {
+      transform: scale(1.05);
+    }
+
+    /* Secondary Actions (Shop & Hire) */
+    .secondary-actions {
       display: flex;
-      gap: 16px;
+      gap: 20px;
       justify-content: center;
       flex-wrap: wrap;
       opacity: 0;
-      animation: fadeInUp 0.8s ease-out 0.6s forwards;
+      animation: fadeInUp 0.8s ease-out 0.8s forwards;
     }
-    
     .btn-outline {
       background-color: transparent;
       border: 2px solid var(--border-color);
-      color: var(--text-main);
-      padding: 12px 24px;
+      color: var(--text-muted);
+      padding: 10px 24px;
       border-radius: 50px;
       font-weight: bold;
       text-decoration: none;
       transition: all 0.3s ease;
     }
-
-    /* Hover Lift Effects */
-    .btn-primary {
-      box-shadow: 0 0 15px rgba(236, 72, 153, 0.3);
-      text-decoration: none;
-    }
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 5px 25px rgba(236, 72, 153, 0.6);
-    }
     .btn-outline:hover {
-      transform: translateY(-3px);
       border-color: var(--primary-color);
+      color: var(--text-main);
       background-color: rgba(255, 255, 255, 0.05);
     }
   </style>
 </head>
 <body>
 
-  <!-- Smart Nav Injection -->
   <div id="nav-container" style="width: 100%; position: relative; z-index: 10;"></div>
 
   <div class="container hero-wrapper">
-    
-    <!-- Animated Ambient Blobs -->
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     
-    <!-- Hero Content -->
     <div class="hero">
-      <h1>Bringing Ideas to <span class="highlight-animated">Life.</span></h1>
-      <p>Digital Graphic Designer specializing in modern branding, high-quality templates, and custom visual experiences.</p>
+      <h1>Welcome to <span class="highlight">Sha's Designs.</span></h1>
+      <p>Digital Graphic Designer specializing in modern branding, aesthetic templates, and custom visual art.</p>
       
-      <div class="hero-actions">
-        <a href="shop.html" class="btn-primary">View Shop</a>
-        <a href="hire.html" class="btn-outline">Hire Me</a>
+      <!-- The Main Focus -->
+      <div class="primary-action">
+        <a href="explore.html" class="btn-explore">Explore My Work</a>
+      </div>
+
+      <!-- The Secondary Focus -->
+      <div class="secondary-actions">
+        <a href="shop.html" class="btn-outline">Shop Templates</a>
+        <a href="hire.html" class="btn-outline">Contact & Hire</a>
       </div>
     </div>
-
   </div>
 
   <script src="nav.js"></script>
