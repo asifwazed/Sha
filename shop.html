@@ -23,31 +23,10 @@
       display: flex;
       flex-direction: column;
     }
-    .shop-card img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      background-color: #374151; 
-    }
-    .shop-details {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1; 
-    }
-    .shop-title {
-      font-size: 20px;
-      font-weight: bold;
-      margin: 0 0 8px 0;
-    }
-    .shop-price {
-      color: var(--primary-color);
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-    
-    /* Single Primary Button Layout */
+    .shop-card img { width: 100%; height: 220px; object-fit: cover; background-color: #374151; }
+    .shop-details { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+    .shop-title { font-size: 20px; font-weight: bold; margin: 0 0 8px 0; }
+    .shop-price { color: var(--primary-color); font-size: 24px; font-weight: bold; margin-bottom: 20px; }
     .btn-buy {
       background-color: var(--primary-color);
       color: white;
@@ -59,10 +38,7 @@
       transition: 0.3s;
       margin-top: auto;
     }
-    .btn-buy:hover {
-      background-color: var(--primary-hover);
-      transform: translateY(-2px);
-    }
+    .btn-buy:hover { background-color: var(--primary-hover); transform: translateY(-2px); }
   </style>
 </head>
 <body>
@@ -72,30 +48,67 @@
   <div class="container">
     <h2 class="page-title">Digital Templates</h2>
     
-    <div class="shop-grid">
-      
-      <div class="shop-card">
-        <img src="https://via.placeholder.com/600x300/4b5563/ffffff?text=Social+Media+Kit" alt="Social Media Kit">
-        <div class="shop-details">
-          <h3 class="shop-title">Instagram Branding Kit</h3>
-          <div class="shop-price">$25.00</div>
-          <!-- Replaced with a single, direct email button -->
-          <a href="mailto:her-email@gmail.com?subject=Purchase Request: Instagram Branding Kit" class="btn-buy">Contact to Buy</a>
-        </div>
-      </div>
-
-      <div class="shop-card">
-        <img src="https://via.placeholder.com/600x300/4b5563/ffffff?text=Stream+Overlay" alt="Stream Overlay">
-        <div class="shop-details">
-          <h3 class="shop-title">Twitch Stream Overlay</h3>
-          <div class="shop-price">$15.00</div>
-          <a href="mailto:her-email@gmail.com?subject=Purchase Request: Twitch Stream Overlay" class="btn-buy">Contact to Buy</a>
-        </div>
-      </div>
-
+    <!-- This empty div is where Firebase will inject the templates -->
+    <div id="shop-grid" class="shop-grid">
+      <p style="text-align: center; color: var(--text-muted); grid-column: 1 / -1; margin-top: 40px;">Loading templates...</p>
     </div>
   </div>
 
   <script src="nav.js"></script>
+
+  <!-- Firebase Fetch Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCecl3QPW8fkn3ZlfGqyo9VwC_Ar53br70",
+      authDomain: "sha-s-designs.firebaseapp.com",
+      projectId: "sha-s-designs",
+      storageBucket: "sha-s-designs.firebasestorage.app",
+      messagingSenderId: "34957426865",
+      appId: "1:34957426865:web:023ba0243629949b12e290"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // CHANGE THIS TO HER ACTUAL EMAIL
+    const MY_EMAIL = "her-email@gmail.com";
+
+    async function loadShopItems() {
+      const grid = document.getElementById('shop-grid');
+      try {
+        const q = query(collection(db, "shop_items"), orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+          grid.innerHTML = "<p style='text-align: center; color: var(--text-muted); grid-column: 1 / -1;'>No templates available right now.</p>";
+          return;
+        }
+
+        let html = "";
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          html += `
+            <div class="shop-card">
+              <img src="${data.imageUrl}" alt="${data.title}">
+              <div class="shop-details">
+                <h3 class="shop-title">${data.title}</h3>
+                <div class="shop-price">$${data.price}</div>
+                <a href="mailto:${MY_EMAIL}?subject=Purchase Request: ${data.title}" class="btn-buy">Contact to Buy</a>
+              </div>
+            </div>
+          `;
+        });
+        grid.innerHTML = html;
+      } catch (error) {
+        console.error("Firebase Error:", error);
+        grid.innerHTML = "<p style='text-align: center; color: #ef4444; grid-column: 1 / -1;'>Error loading templates.</p>";
+      }
+    }
+
+    loadShopItems();
+  </script>
 </body>
 </html>
