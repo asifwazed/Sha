@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio Sha | Hire & Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ========================================== */
+    /* PORTFOLIO MASONRY GRID                     */
+    /* ========================================== */
+    .masonry-grid {
+      column-count: 2; 
+      column-gap: 16px;
+      margin-bottom: 60px;
+    }
+    @media (min-width: 600px) {
+      .masonry-grid { column-count: 3; }
+    }
+    .grid-item {
+      display: inline-block;
+      width: 100%;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      background-color: var(--card-bg);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      transition: transform 0.3s ease;
+    }
+    .grid-item:hover { transform: scale(1.03); }
+    .grid-item img {
+      width: 100%;
+      display: block;
+      background-color: #374151;
+    }
+
+    /* ========================================== */
+    /* CONTACT FORM & SOCIALS                     */
+    /* ========================================== */
+    .contact-wrapper {
+      background-color: var(--card-bg);
+      padding: 30px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 60px;
+    }
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    .contact-form input, 
+    .contact-form textarea {
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-size: 16px;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+    .contact-form input:focus, 
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    .contact-form textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    
+    .business-info {
+      text-align: center;
+      border-top: 1px solid var(--border-color);
+      padding-top: 20px;
+    }
+    .business-info p {
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .business-info a {
+      color: var(--primary-color);
+      font-weight: bold;
+      text-decoration: none;
+    }
+    
+    .social-row {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .social-row a {
+      color: var(--text-main);
+      background-color: var(--border-color);
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+    .social-row a:hover {
+      background-color: var(--primary-color);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Smart Nav Injection -->
+  <div id="nav-container" style="width: 100%;"></div>
+
+  <div class="container">
+    
+    <!-- ========================================== -->
+    <!-- PORTFOLIO SECTION                          -->
+    <!-- ========================================== -->
+    <h2 class="page-title">My Work</h2>
+    <div class="masonry-grid">
+      <div class="grid-item"><img src="https://via.placeholder.com/400x600/ec4899/ffffff?text=Design+1" alt="Design 1"></div>
+      <div class="grid-item"><img src="https://via.placeholder.com/400x400/8b5cf6/ffffff?text=Design+2" alt="Design 2"></div>
+      <div class="grid-item"><img src="https://via.placeholder.com/400x700/3b82f6/ffffff?text=Design+3" alt="Design 3"></div>
+      <div class="grid-item"><img src="https://via.placeholder.com/400x500/10b981/ffffff?text=Design+4" alt="Design 4"></div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- HIRE ME & CONTACT                          -->
+    <!-- ========================================== -->
+    <h2 class="page-title">Let's Work Together</h2>
+    <div class="contact-wrapper">
+      
+      <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+        <!-- LATER: Paste your Web3Forms key here -->
+        <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+        
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Project details, timeline, and budget..." required></textarea>
+        
+        <button type="submit" class="btn-primary">Send Message</button>
+      </form>
+
+      <div class="business-info">
+        <!-- LATER: Update the email address -->
+        <p>Direct Business Email: <br> <a href="mailto:her-email@gmail.com">her-email@gmail.com</a></p>
+        
+        <!-- LATER: Update Social Links -->
+        <div class="social-row">
+          <a href="#" target="_blank">Instagram</a>
+          <a href="#" target="_blank">X (Twitter)</a>
+          <a href="#" target="_blank">Behance</a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="nav.js"></script>
+</body>
+</html>
