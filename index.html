@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Designer Portfolio</title>
+  <title>Studio Sha | Portfolio & Templates</title>
   <style>
-    /* Base Setup */
+    /* ========================================== */
+    /* BASE SETUP                                 */
+    /* ========================================== */
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,7 +20,9 @@
       min-height: 100vh;
     }
 
-    /* Navigation */
+    /* ========================================== */
+    /* NAVIGATION                                 */
+    /* ========================================== */
     nav {
       position: absolute;
       top: 0;
@@ -46,12 +50,14 @@
       color: #f472b6;
     }
 
-    /* Hero Section */
+    /* ========================================== */
+    /* HERO SECTION                               */
+    /* ========================================== */
     .hero {
       text-align: center;
       max-width: 600px;
       padding: 20px;
-      margin-top: 60px;
+      margin-top: 100px; /* Pushed down slightly for the navbar */
     }
     h1 {
       font-size: 42px;
@@ -101,11 +107,14 @@
       border-color: #ec4899;
       color: white;
     }
-        /* Portfolio Masonry Grid */
-    .portfolio-section {
+
+    /* ========================================== */
+    /* PORTFOLIO (PINTEREST GRID)                 */
+    /* ========================================== */
+    .portfolio-section, .shop-section {
       width: 100%;
       max-width: 900px;
-      padding: 40px 20px;
+      padding: 60px 20px 20px 20px;
       box-sizing: border-box;
     }
     
@@ -120,12 +129,8 @@
       column-count: 2; /* 2 columns for phones */
       column-gap: 16px;
     }
-
-    /* 3 columns for wider screens (Tablets/Laptops) */
     @media (min-width: 600px) {
-      .masonry-grid {
-        column-count: 3;
-      }
+      .masonry-grid { column-count: 3; }
     }
 
     .grid-item {
@@ -137,42 +142,132 @@
       overflow: hidden;
       transition: transform 0.3s ease;
     }
-
-    .grid-item:hover {
-      transform: scale(1.03);
-    }
-
+    .grid-item:hover { transform: scale(1.03); }
     .grid-item img {
       width: 100%;
       display: block;
-      /* Using a placeholder gray background while images load */
       background-color: #374151; 
+    }
+
+    /* ========================================== */
+    /* SHOP TEMPLATES                             */
+    /* ========================================== */
+    .shop-grid {
+      display: grid;
+      grid-template-columns: 1fr; /* 1 column on phones */
+      gap: 20px;
+    }
+    @media (min-width: 600px) {
+      .shop-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .shop-card {
+      background-color: #1f2937;
+      border-radius: 12px;
+      overflow: hidden;
+      padding-bottom: 16px;
+    }
+    .shop-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .shop-details { padding: 16px; }
+    .shop-title {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    .shop-price {
+      color: #ec4899;
+      font-weight: bold;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+    .buy-btn {
+      width: 100%;
+      background-color: #374151;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .buy-btn:hover { background-color: #ec4899; }
+
+    /* ========================================== */
+    /* CONTACT FORM                               */
+    /* ========================================== */
+    .contact-section {
+      width: 100%;
+      max-width: 600px;
+      padding: 60px 20px 80px 20px;
+      box-sizing: border-box;
+    }
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .contact-form input, 
+    .contact-form textarea {
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid #4b5563;
+      background-color: #1f2937;
+      color: white;
+      font-size: 16px;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+    .contact-form input:focus, 
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: #ec4899;
+    }
+    .contact-form textarea {
+      resize: vertical;
+      min-height: 120px;
     }
   </style>
 </head>
 <body>
 
+  <!-- ========================================== -->
+  <!-- 🔵 NAVBAR: Edit Logo & Links Here 🔵       -->
+  <!-- ========================================== -->
   <nav>
-    <div class="logo">DESIGNER.</div>
+    <div class="logo">STUDIO SHA.</div>
     <div class="links">
-      <a href="#">Work</a>
-      <a href="#">Templates</a>
+      <a href="#portfolio">Work</a>
+      <a href="#templates">Templates</a>
     </div>
   </nav>
 
+  <!-- ========================================== -->
+  <!-- 🔵 HERO SECTION: Edit Bio & Buttons Here 🔵-->
+  <!-- ========================================== -->
   <div class="hero">
     <h1>Bringing Ideas to <span class="highlight">Life.</span></h1>
     <p>Digital Graphic Designer specializing in modern branding, high-quality templates, and custom visual experiences.</p>
     
     <div class="buttons">
-      <button class="btn-primary">View Portfolio</button>
-      <button class="btn-secondary">Hire Me</button>
+      <!-- Added onclick events to scroll down smoothly -->
+      <button class="btn-primary" onclick="document.getElementById('portfolio').scrollIntoView({behavior: 'smooth'})">View Portfolio</button>
+      <button class="btn-secondary" onclick="document.getElementById('hire-me').scrollIntoView({behavior: 'smooth'})">Hire Me</button>
     </div>
   </div>
-  <div class="portfolio-section">
+
+  <!-- ========================================== -->
+  <!-- 🔵 PORTFOLIO SECTION: Add/Remove Images 🔵 -->
+  <!-- ========================================== -->
+  <div class="portfolio-section" id="portfolio">
     <h2 class="section-title">Recent Work</h2>
     <div class="masonry-grid">
-      <!-- Placeholder Items of different heights to show the Pinterest effect -->
+      
       <div class="grid-item">
         <img src="https://via.placeholder.com/400x600/ec4899/ffffff?text=Design+1" alt="Design 1">
       </div>
@@ -185,13 +280,54 @@
       <div class="grid-item">
         <img src="https://via.placeholder.com/400x500/10b981/ffffff?text=Design+4" alt="Design 4">
       </div>
-      <div class="grid-item">
-        <img src="https://via.placeholder.com/400x800/f59e0b/ffffff?text=Design+5" alt="Design 5">
-      </div>
-      <div class="grid-item">
-        <img src="https://via.placeholder.com/400x450/ef4444/ffffff?text=Design+6" alt="Design 6">
-      </div>
+      
     </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 🔵 SHOP SECTION: Edit Prices & Titles Here 🔵-->
+  <!-- ========================================== -->
+  <div class="shop-section" id="templates">
+    <h2 class="section-title">Shop Templates</h2>
+    <div class="shop-grid">
+      
+      <div class="shop-card">
+        <img src="https://via.placeholder.com/400x200/4b5563/ffffff?text=Social+Media+Kit" alt="Template">
+        <div class="shop-details">
+          <div class="shop-title">Instagram Branding Kit</div>
+          <div class="shop-price">$25.00</div>
+          <button class="buy-btn">Purchase</button>
+        </div>
+      </div>
+
+      <div class="shop-card">
+        <img src="https://via.placeholder.com/400x200/4b5563/ffffff?text=Twitch+Overlay" alt="Template">
+        <div class="shop-details">
+          <div class="shop-title">Twitch Stream Overlay</div>
+          <div class="shop-price">$15.00</div>
+          <button class="buy-btn">Purchase</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 🔵 CONTACT FORM: Web3Forms Setup Here 🔵   -->
+  <!-- ========================================== -->
+  <div class="contact-section" id="hire-me">
+    <h2 class="section-title">Let's Work Together</h2>
+    <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+      
+      <!-- Replace YOUR_ACCESS_KEY_HERE with the key from Web3Forms -->
+      <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+      
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" placeholder="Tell me about your project..." required></textarea>
+      
+      <button type="submit" class="btn-primary">Send Message</button>
+    </form>
   </div>
 
 </body>
