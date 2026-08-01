@@ -1,0 +1,56 @@
+/* ========================================== */
+/* SMART GLOBALS                              */
+/* ========================================== */
+:root {
+  --bg-color: #111827;
+  --text-main: #ffffff;
+  --text-muted: #9ca3af;
+  --primary-color: #ec4899;      /* Sha's Pink */
+  --primary-hover: #db2777;
+  --card-bg: #1f2937;
+  --border-color: #374151;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Global Container */
+.container {
+  width: 100%;
+  max-width: 900px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Shared Titles */
+.page-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  border-left: 4px solid var(--primary-color);
+  padding-left: 12px;
+}
+
+/* Shared Buttons */
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
