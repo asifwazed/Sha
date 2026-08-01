@@ -3,203 +3,206 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sha's Designs | Home</title>
+  <title>Sha's Designs | Studio</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* ========================================== */
-    /* STUDIO GRID BACKGROUND                     */
-    /* ========================================== */
+    /* HIGH-END STUDIO AESTHETIC */
+    @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;500&display=swap');
+
     body {
-      background-color: #0f172a; /* Slightly deeper dark */
-      background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 50px 50px;
+      background-color: #050505; /* Deepest black */
+      color: #ffffff;
       overflow-x: hidden;
+      font-family: 'Inter', sans-serif;
     }
 
-    /* ========================================== */
-    /* ANIMATIONS                                 */
-    /* ========================================== */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes gradientPulse {
-      0% { box-shadow: 0 0 15px rgba(236, 72, 153, 0.4); }
-      50% { box-shadow: 0 0 35px rgba(236, 72, 153, 0.8); }
-      100% { box-shadow: 0 0 15px rgba(236, 72, 153, 0.4); }
-    }
-    @keyframes scrollGallery {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); } /* Scrolls half the width to loop perfectly */
-    }
-
-    .hero-wrapper {
+    .hero-container {
       position: relative;
       width: 100%;
-      min-height: 85vh;
+      min-height: 90vh;
       display: flex;
       align-items: center;
-      justify-content: center;
+      padding: 0 5%;
+      box-sizing: border-box;
     }
 
-    /* Ambient Glow */
-    .glow-orb {
-      position: absolute;
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(236,72,153,0.15) 0%, rgba(0,0,0,0) 70%);
-      z-index: 0;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    /* ========================================== */
-    /* INFINITE SCROLLING GALLERY                 */
-    /* ========================================== */
-    .scrolling-wrapper {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 100vw;
-      transform: translateY(-50%) rotate(-5deg); /* Cool angled look */
-      z-index: 1;
-      opacity: 0.4; /* Keeps it in the background */
-      pointer-events: none;
-    }
-    
-    .scrolling-track {
-      display: flex;
-      width: 200%; /* Double width for the loop */
-      animation: scrollGallery 25s linear infinite;
-      gap: 20px;
-    }
-
-    .scrolling-track img {
-      width: 250px;
-      height: 350px;
-      object-fit: cover;
-      border-radius: 16px;
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-
-    /* ========================================== */
-    /* FOREGROUND GLASS CARD                      */
-    /* ========================================== */
-    .hero {
-      text-align: center;
-      max-width: 700px;
-      padding: 60px 40px;
+    /* MASSIVE EDITORIAL TYPOGRAPHY */
+    .hero-text {
+      position: relative;
       z-index: 10;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 24px;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-      opacity: 0;
-      animation: fadeInUp 0.8s ease-out forwards;
+      max-width: 800px;
     }
 
-    .hero h1 {
-      font-size: 56px;
-      margin-bottom: 16px;
+    .hero-text h1 {
+      font-family: 'Syncopate', sans-serif; /* Wide, high-fashion font */
+      font-size: clamp(2.5rem, 6vw, 6.5rem);
       line-height: 1.1;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: -2px;
     }
-    .highlight {
-      color: var(--primary-color);
-      text-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
+
+    /* The Designer Outline Effect */
+    .text-outline {
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
     }
-    .hero p {
-      color: var(--text-main);
-      font-size: 18px;
+
+    /* The Pink Glow Accent */
+    .text-glow {
+      color: #ec4899;
+      text-shadow: 0 0 40px rgba(236, 72, 153, 0.6);
+    }
+
+    .hero-text p {
+      font-size: 1.2rem;
+      color: #a3a3a3;
+      margin-top: 30px;
       margin-bottom: 40px;
+      max-width: 500px;
       line-height: 1.6;
     }
 
-    /* Buttons */
-    .btn-explore {
-      display: inline-block;
-      background: linear-gradient(90deg, #ec4899, #8b5cf6);
-      color: white;
-      font-size: 20px;
-      font-weight: 800;
-      padding: 16px 45px;
-      border-radius: 50px;
+    /* CHIC BUTTONS (Sharp, not bubbly) */
+    .btn-group {
+      display: flex;
+      gap: 20px;
+    }
+
+    .btn-primary-chic {
+      background: #ec4899;
+      color: #fff;
+      padding: 16px 40px;
+      font-size: 14px;
+      font-family: 'Syncopate', sans-serif;
       text-decoration: none;
       text-transform: uppercase;
       letter-spacing: 2px;
-      animation: gradientPulse 3s infinite;
-      transition: transform 0.3s ease;
-      margin-bottom: 30px;
-    }
-    .btn-explore:hover {
-      transform: scale(1.05);
+      border-radius: 0px; /* Sharp corners scream high-end */
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(236, 72, 153, 0.2);
     }
 
-    .secondary-actions {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
+    .btn-primary-chic:hover {
+      background: #fff;
+      color: #000;
+      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
     }
-    .btn-outline {
-      background-color: transparent;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      color: var(--text-muted);
-      padding: 12px 28px;
-      border-radius: 50px;
-      font-weight: bold;
+
+    .btn-outline-chic {
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 16px 40px;
+      font-size: 14px;
+      font-family: 'Syncopate', sans-serif;
       text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-radius: 0px;
       transition: all 0.3s ease;
     }
-    .btn-outline:hover {
-      border-color: var(--primary-color);
-      color: white;
-      background-color: rgba(236, 72, 153, 0.1);
+
+    .btn-outline-chic:hover {
+      border-color: #ec4899;
+      color: #ec4899;
+    }
+
+    /* ASYMMETRICAL FLOATING ARTWORK */
+    .art-showcase {
+      position: absolute;
+      right: 5%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 45%;
+      height: 70vh;
+      pointer-events: none;
+    }
+
+    .art-showcase img {
+      position: absolute;
+      border-radius: 4px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      transition: transform 0.5s ease;
+    }
+
+    .art-1 {
+      width: 320px;
+      height: 420px;
+      object-fit: cover;
+      right: 15%;
+      top: 0;
+      z-index: 2;
+      border: 1px solid rgba(236, 72, 153, 0.3);
+    }
+
+    .art-2 {
+      width: 250px;
+      height: 350px;
+      object-fit: cover;
+      right: 45%;
+      bottom: -10%;
+      z-index: 3;
+    }
+
+    .art-3 {
+      width: 200px;
+      height: 280px;
+      object-fit: cover;
+      right: 0;
+      top: 30%;
+      z-index: 1;
+      opacity: 0.4;
+      filter: grayscale(100%);
+    }
+
+    /* Film Noise Texture Overlay */
+    .noise-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 900px) {
+      .hero-container { flex-direction: column; justify-content: center; text-align: left; padding-top: 10vh; }
+      .art-showcase { position: relative; width: 100%; height: 400px; margin-top: 50px; right: 0; top: 0; transform: none; }
+      .art-1 { right: 50%; transform: translateX(50%); top: 0; }
+      .art-2, .art-3 { display: none; }
+      .btn-group { flex-direction: column; width: 100%; max-width: 300px; }
+      .btn-primary-chic, .btn-outline-chic { text-align: center; }
     }
   </style>
 </head>
 <body>
-
+  
+  <div class="noise-overlay"></div>
   <div id="nav-container" style="width: 100%; position: relative; z-index: 50;"></div>
 
-  <div class="hero-wrapper">
+  <div class="hero-container">
     
-    <!-- Central Pink Glow -->
-    <div class="glow-orb"></div>
-    
-    <!-- Infinite Scrolling Background (Angled) -->
-    <div class="scrolling-wrapper">
-      <div class="scrolling-track">
-        <!-- We duplicate the images so it loops seamlessly -->
-        <img src="https://via.placeholder.com/250x350/ec4899/ffffff?text=Art+1" alt="Art 1">
-        <img src="https://via.placeholder.com/250x350/8b5cf6/ffffff?text=Art+2" alt="Art 2">
-        <img src="https://via.placeholder.com/250x350/3b82f6/ffffff?text=Art+3" alt="Art 3">
-        <img src="https://via.placeholder.com/250x350/10b981/ffffff?text=Art+4" alt="Art 4">
-        <img src="https://via.placeholder.com/250x350/ec4899/ffffff?text=Art+1" alt="Art 1">
-        <img src="https://via.placeholder.com/250x350/8b5cf6/ffffff?text=Art+2" alt="Art 2">
-        <img src="https://via.placeholder.com/250x350/3b82f6/ffffff?text=Art+3" alt="Art 3">
-        <img src="https://via.placeholder.com/250x350/10b981/ffffff?text=Art+4" alt="Art 4">
+    <div class="hero-text">
+      <h1>
+        <span class="text-outline">Digital</span><br>
+        <span class="text-glow">Aesthetics</span><br>
+        By Sha
+      </h1>
+      <p>Elevating brand identities and digital spaces through modern, high-contrast visual design.</p>
+      
+      <div class="btn-group">
+        <a href="explore.html" class="btn-primary-chic">View Portfolio</a>
+        <a href="hire.html" class="btn-outline-chic">Commission Me</a>
       </div>
     </div>
-    
-    <!-- Foreground Card -->
-    <div class="hero">
-      <h1>Welcome to <br><span class="highlight">Sha's Designs.</span></h1>
-      <p>Digital Graphic Designer specializing in modern branding, aesthetic templates, and custom visual art.</p>
-      
-      <div>
-        <a href="explore.html" class="btn-explore">Explore My Work</a>
-      </div>
 
-      <div class="secondary-actions">
-        <a href="shop.html" class="btn-outline">Shop Templates</a>
-        <a href="hire.html" class="btn-outline">Contact & Hire</a>
-      </div>
+    <!-- Replace these placeholder links with her actual best artworks -->
+    <div class="art-showcase">
+      <img src="https://via.placeholder.com/320x420/ec4899/ffffff?text=Main+Piece" class="art-1" alt="Art 1">
+      <img src="https://via.placeholder.com/250x350/111111/ec4899?text=Secondary+Art" class="art-2" alt="Art 2">
+      <img src="https://via.placeholder.com/200x280/8b5cf6/ffffff?text=Abstract" class="art-3" alt="Art 3">
     </div>
 
   </div>
