@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin | Sha's Designs</title>
+  <title>Admin Dashboard | Sha's Designs</title>
   <link rel="stylesheet" href="style.css">
   <style>
     .admin-container {
@@ -14,49 +14,47 @@
       border-radius: 12px;
       border: 1px solid var(--border-color);
     }
-    .form-group {
-      margin-bottom: 20px;
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 8px; color: var(--text-muted); font-weight: bold; }
+    input[type="text"], input[type="number"], select, textarea, input[type="file"] {
+      width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);
+      background-color: var(--bg-color); color: var(--text-main); box-sizing: border-box;
     }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--text-muted);
-      font-weight: bold;
-    }
-    input[type="text"], textarea, input[type="file"] {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      box-sizing: border-box;
-    }
-    textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
-    #status {
-      margin-top: 15px;
-      font-weight: bold;
-      text-align: center;
-      color: var(--primary-color);
-    }
+    textarea { min-height: 100px; resize: vertical; }
+    #status { margin-top: 15px; font-weight: bold; text-align: center; color: var(--primary-color); }
+    
+    /* Hides the price/caption fields based on selection */
+    .hidden { display: none; }
   </style>
 </head>
 <body>
 
   <div class="admin-container">
-    <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 30px;">Upload to Explore</h2>
+    <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 30px;">Studio Dashboard</h2>
     
     <div class="form-group">
-      <label>Post Title</label>
-      <input type="text" id="postTitle" placeholder="e.g., New Logo Design">
+      <label>Where are you uploading to?</label>
+      <select id="uploadType">
+        <option value="explore">Explore Page (Art & Posts)</option>
+        <option value="shop">Shop Page (Templates for Sale)</option>
+      </select>
     </div>
 
     <div class="form-group">
+      <label>Title</label>
+      <input type="text" id="postTitle" placeholder="e.g., Pink Twitch Overlay">
+    </div>
+
+    <!-- Shows for Explore -->
+    <div class="form-group" id="captionGroup">
       <label>Caption / Details</label>
       <textarea id="postCaption" placeholder="Write something about this design..."></textarea>
+    </div>
+
+    <!-- Shows for Shop -->
+    <div class="form-group hidden" id="priceGroup">
+      <label>Price ($)</label>
+      <input type="number" id="postPrice" placeholder="e.g., 15">
     </div>
 
     <div class="form-group">
@@ -64,13 +62,12 @@
       <input type="file" id="postImage" accept="image/*">
     </div>
 
-    <button id="publishBtn" class="btn-primary" style="width: 100%;">Publish Post</button>
+    <button id="publishBtn" class="btn-primary" style="width: 100%;">Publish</button>
     
     <div id="status"></div>
   </div>
 
   <script type="module">
-    // 1. Initialize Firebase (For Database Only)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
 
@@ -86,28 +83,48 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // 2. ImgBB Key for Photos
-    const IMGBB_API_KEY = a941c836ab5e48dacb236993354c1820; // <--- PASTE KEY HERE
+    // PASTE YOUR IMGBB KEY HERE
+    const IMGBB_API_KEY = a941c836ab5e48dacb236993354c1820; 
 
+    // UI Logic to switch between Explore/Shop fields
+    const uploadType = document.getElementById('uploadType');
+    const captionGroup = document.getElementById('captionGroup');
+    const priceGroup = document.getElementById('priceGroup');
+
+    uploadType.addEventListener('change', (e) => {
+      if (e.target.value === 'shop') {
+        captionGroup.classList.add('hidden');
+        priceGroup.classList.remove('hidden');
+      } else {
+        captionGroup.classList.remove('hidden');
+        priceGroup.classList.add('hidden');
+      }
+    });
+
+    // Upload Logic
     document.getElementById('publishBtn').addEventListener('click', async () => {
+      const type = uploadType.value;
       const title = document.getElementById('postTitle').value;
       const caption = document.getElementById('postCaption').value;
+      const price = document.getElementById('postPrice').value;
       const fileInput = document.getElementById('postImage');
       const status = document.getElementById('status');
 
-      if (!title || !caption || fileInput.files.length === 0) {
-        status.innerText = "Please fill all fields and select an image.";
+      if (!title || fileInput.files.length === 0) {
+        status.innerText = "Please fill the title and select an image.";
+        return;
+      }
+      if (type === 'shop' && !price) {
+        status.innerText = "Please enter a price for the shop item.";
         return;
       }
 
-      const file = fileInput.files[0];
-      status.innerText = "Uploading image to secure server...";
+      status.innerText = "Uploading image securely...";
       document.getElementById('publishBtn').disabled = true;
 
       try {
-        // Step A: Upload to ImgBB
         const formData = new FormData();
-        formData.append("image", file);
+        formData.append("image", fileInput.files[0]);
 
         const imgbbResponse = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
           method: "POST",
@@ -115,27 +132,34 @@
         });
         
         const imgbbData = await imgbbResponse.json();
-        
-        if (!imgbbData.success) {
-          throw new Error("Image upload failed.");
+        if (!imgbbData.success) throw new Error("Image upload failed.");
+
+        const imageUrl = imgbbData.data.url;
+        status.innerText = "Saving data to your database...";
+
+        // Save to different Firebase folders based on selection
+        if (type === 'explore') {
+          await addDoc(collection(db, "explore_posts"), {
+            title: title,
+            caption: caption,
+            imageUrl: imageUrl,
+            createdAt: serverTimestamp()
+          });
+        } else {
+          await addDoc(collection(db, "shop_items"), {
+            title: title,
+            price: price,
+            imageUrl: imageUrl,
+            createdAt: serverTimestamp()
+          });
         }
 
-        const imageUrl = imgbbData.data.url; // The live image link
-        status.innerText = "Saving post data...";
-
-        // Step B: Save Text and Image URL to Firebase
-        await addDoc(collection(db, "explore_posts"), {
-          title: title,
-          caption: caption,
-          imageUrl: imageUrl,
-          createdAt: serverTimestamp()
-        });
-
-        status.innerText = "✅ Post Published Successfully!";
+        status.innerText = "✅ Published Successfully!";
         
-        // Clear form
+        // Clear fields
         document.getElementById('postTitle').value = '';
         document.getElementById('postCaption').value = '';
+        document.getElementById('postPrice').value = '';
         fileInput.value = '';
 
       } catch (error) {
