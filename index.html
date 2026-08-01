@@ -57,7 +57,7 @@
       text-align: center;
       max-width: 600px;
       padding: 20px;
-      margin-top: 100px; /* Pushed down slightly for the navbar */
+      margin-top: 100px; 
     }
     h1 {
       font-size: 42px;
@@ -73,8 +73,6 @@
       line-height: 1.6;
       margin-bottom: 40px;
     }
-
-    /* Buttons */
     .buttons {
       display: flex;
       gap: 16px;
@@ -117,22 +115,19 @@
       padding: 60px 20px 20px 20px;
       box-sizing: border-box;
     }
-    
     .section-title {
       font-size: 24px;
       margin-bottom: 24px;
       border-left: 4px solid #ec4899;
       padding-left: 12px;
     }
-
     .masonry-grid {
-      column-count: 2; /* 2 columns for phones */
+      column-count: 2; 
       column-gap: 16px;
     }
     @media (min-width: 600px) {
       .masonry-grid { column-count: 3; }
     }
-
     .grid-item {
       display: inline-block;
       width: 100%;
@@ -154,13 +149,12 @@
     /* ========================================== */
     .shop-grid {
       display: grid;
-      grid-template-columns: 1fr; /* 1 column on phones */
+      grid-template-columns: 1fr; 
       gap: 20px;
     }
     @media (min-width: 600px) {
       .shop-grid { grid-template-columns: repeat(2, 1fr); }
     }
-
     .shop-card {
       background-color: #1f2937;
       border-radius: 12px;
@@ -198,12 +192,12 @@
     .buy-btn:hover { background-color: #ec4899; }
 
     /* ========================================== */
-    /* CONTACT FORM                               */
+    /* CONTACT FORM & FOOTER                      */
     /* ========================================== */
     .contact-section {
       width: 100%;
       max-width: 600px;
-      padding: 60px 20px 80px 20px;
+      padding: 60px 20px 40px 20px;
       box-sizing: border-box;
     }
     .contact-form {
@@ -232,12 +226,46 @@
       resize: vertical;
       min-height: 120px;
     }
+    
+    .direct-email {
+      text-align: center;
+      margin-top: 20px;
+      color: #9ca3af;
+    }
+    .direct-email a {
+      color: #f472b6;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer {
+      width: 100%;
+      padding: 40px 20px;
+      text-align: center;
+      border-top: 1px solid #374151;
+      margin-top: 20px;
+    }
+    .social-links a {
+      color: #d1d5db;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    .social-links a:hover {
+      color: #f472b6;
+    }
+    .copyright {
+      margin-top: 20px;
+      color: #6b7280;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
 
   <!-- ========================================== -->
-  <!-- 🔵 NAVBAR: Edit Logo & Links Here 🔵       -->
+  <!-- 🔵 NAVBAR 🔵                               -->
   <!-- ========================================== -->
   <nav>
     <div class="logo">STUDIO SHA.</div>
@@ -248,49 +276,37 @@
   </nav>
 
   <!-- ========================================== -->
-  <!-- 🔵 HERO SECTION: Edit Bio & Buttons Here 🔵-->
+  <!-- 🔵 HERO SECTION 🔵                         -->
   <!-- ========================================== -->
   <div class="hero">
     <h1>Bringing Ideas to <span class="highlight">Life.</span></h1>
     <p>Digital Graphic Designer specializing in modern branding, high-quality templates, and custom visual experiences.</p>
-    
     <div class="buttons">
-      <!-- Added onclick events to scroll down smoothly -->
       <button class="btn-primary" onclick="document.getElementById('portfolio').scrollIntoView({behavior: 'smooth'})">View Portfolio</button>
       <button class="btn-secondary" onclick="document.getElementById('hire-me').scrollIntoView({behavior: 'smooth'})">Hire Me</button>
     </div>
   </div>
 
   <!-- ========================================== -->
-  <!-- 🔵 PORTFOLIO SECTION: Add/Remove Images 🔵 -->
+  <!-- 🔵 PORTFOLIO SECTION 🔵                    -->
   <!-- ========================================== -->
+  <!-- To use real images: Upload 'image1.jpg' to GitHub, then change src below to 'image1.jpg' -->
   <div class="portfolio-section" id="portfolio">
     <h2 class="section-title">Recent Work</h2>
     <div class="masonry-grid">
-      
-      <div class="grid-item">
-        <img src="https://via.placeholder.com/400x600/ec4899/ffffff?text=Design+1" alt="Design 1">
-      </div>
-      <div class="grid-item">
-        <img src="https://via.placeholder.com/400x400/8b5cf6/ffffff?text=Design+2" alt="Design 2">
-      </div>
-      <div class="grid-item">
-        <img src="https://via.placeholder.com/400x700/3b82f6/ffffff?text=Design+3" alt="Design 3">
-      </div>
-      <div class="grid-item">
-        <img src="https://via.placeholder.com/400x500/10b981/ffffff?text=Design+4" alt="Design 4">
-      </div>
-      
+      <div class="grid-item"><img src="https://via.placeholder.com/400x600/ec4899/ffffff?text=Design+1" alt="Design 1"></div>
+      <div class="grid-item"><img src="https://via.placeholder.com/400x400/8b5cf6/ffffff?text=Design+2" alt="Design 2"></div>
+      <div class="grid-item"><img src="https://via.placeholder.com/400x700/3b82f6/ffffff?text=Design+3" alt="Design 3"></div>
+      <div class="grid-item"><img src="https://via.placeholder.com/400x500/10b981/ffffff?text=Design+4" alt="Design 4"></div>
     </div>
   </div>
 
   <!-- ========================================== -->
-  <!-- 🔵 SHOP SECTION: Edit Prices & Titles Here 🔵-->
+  <!-- 🔵 SHOP SECTION 🔵                         -->
   <!-- ========================================== -->
   <div class="shop-section" id="templates">
     <h2 class="section-title">Shop Templates</h2>
     <div class="shop-grid">
-      
       <div class="shop-card">
         <img src="https://via.placeholder.com/400x200/4b5563/ffffff?text=Social+Media+Kit" alt="Template">
         <div class="shop-details">
@@ -299,36 +315,49 @@
           <button class="buy-btn">Purchase</button>
         </div>
       </div>
-
-      <div class="shop-card">
-        <img src="https://via.placeholder.com/400x200/4b5563/ffffff?text=Twitch+Overlay" alt="Template">
-        <div class="shop-details">
-          <div class="shop-title">Twitch Stream Overlay</div>
-          <div class="shop-price">$15.00</div>
-          <button class="buy-btn">Purchase</button>
-        </div>
-      </div>
-
     </div>
   </div>
 
   <!-- ========================================== -->
-  <!-- 🔵 CONTACT FORM: Web3Forms Setup Here 🔵   -->
+  <!-- 🔵 CONTACT FORM 🔵                         -->
   <!-- ========================================== -->
   <div class="contact-section" id="hire-me">
     <h2 class="section-title">Let's Work Together</h2>
     <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
       
-      <!-- Replace YOUR_ACCESS_KEY_HERE with the key from Web3Forms -->
+      <!-- LATER: Paste your Web3Forms key inside the quotes for value="" -->
       <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
       
       <input type="text" name="name" placeholder="Your Name" required>
       <input type="email" name="email" placeholder="Your Email" required>
       <textarea name="message" placeholder="Tell me about your project..." required></textarea>
-      
       <button type="submit" class="btn-primary">Send Message</button>
     </form>
+
+    <!-- LATER: Paste her actual email address where it says her-email@gmail.com -->
+    <div class="direct-email">
+      Or email me directly at: <a href="mailto:her-email@gmail.com">her-email@gmail.com</a>
+    </div>
   </div>
+
+  <!-- ========================================== -->
+  <!-- 🔵 FOOTER (SOCIAL LINKS) 🔵                -->
+  <!-- ========================================== -->
+  <footer>
+    <div class="social-links">
+      <!-- LATER: Paste the Instagram link inside the href="" quotes -->
+      <a href="PUT_INSTAGRAM_LINK_HERE" target="_blank">Instagram</a>
+      
+      <!-- LATER: Paste the X/Twitter link inside the href="" quotes -->
+      <a href="PUT_X_LINK_HERE" target="_blank">X (Twitter)</a>
+      
+      <!-- LATER: Paste the Behance link inside the href="" quotes -->
+      <a href="PUT_BEHANCE_LINK_HERE" target="_blank">Behance</a>
+    </div>
+    <div class="copyright">
+      &copy; 2026 Studio Sha. All rights reserved.
+    </div>
+  </footer>
 
 </body>
 </html>
