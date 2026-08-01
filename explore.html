@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Studio Sha | Feed</title>
+  <title>Sha's Designs | Explore</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Feed-specific styles */
     .post-card {
       background-color: var(--card-bg);
       border-radius: 12px;
@@ -21,76 +20,77 @@
       margin-bottom: 8px;
       display: block;
     }
-    .post-title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-top: 0;
-      margin-bottom: 12px;
-    }
-    .post-content {
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 16px;
-    }
-    .post-image {
-      width: 100%;
-      border-radius: 8px;
-      margin-bottom: 16px;
-      background-color: #374151; /* Placeholder color */
-    }
-    
-    /* Responsive Video Embeds */
-    .video-container {
-      position: relative;
-      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-      height: 0;
-      overflow: hidden;
-      border-radius: 8px;
-    }
-    .video-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
+    .post-title { font-size: 20px; font-weight: bold; margin-top: 0; margin-bottom: 12px; }
+    .post-content { color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; }
+    .post-image { width: 100%; border-radius: 8px; margin-bottom: 16px; background-color: #374151; }
   </style>
 </head>
 <body>
 
-  <!-- Smart Nav Injection -->
   <div id="nav-container" style="width: 100%;"></div>
 
   <div class="container">
-    <h2 class="page-title">Latest Updates</h2>
+    <h2 class="page-title">Explore My Work</h2>
     
-    <!-- ========================================== -->
-    <!-- POST 1: Text & Image                       -->
-    <!-- ========================================== -->
-    <div class="post-card">
-      <span class="post-date">August 1, 2026</span>
-      <h3 class="post-title">New Branding Kit Available!</h3>
-      <p class="post-content">Just dropped the new minimalist branding kit. Perfect for modern lifestyle brands. I've been working on this color palette for weeks.</p>
-      <!-- Change src to a real image later -->
-      <img class="post-image" src="https://via.placeholder.com/800x400/4b5563/ffffff?text=Post+Image" alt="Post Image">
+    <!-- This empty div is where Firebase will inject the posts -->
+    <div id="explore-feed">
+      <p style="text-align: center; color: var(--text-muted); margin-top: 40px;">Loading posts...</p>
     </div>
-
-    <!-- ========================================== -->
-    <!-- POST 2: Video Embed                        -->
-    <!-- ========================================== -->
-    <div class="post-card">
-      <span class="post-date">July 28, 2026</span>
-      <h3 class="post-title">Behind the Scenes: Logo Design</h3>
-      <p class="post-content">A quick time-lapse of my process designing the logo for the new café client.</p>
-      <div class="video-container">
-        <!-- Paste a YouTube embed link here later -->
-        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
-      </div>
-    </div>
-
   </div>
 
   <script src="nav.js"></script>
+
+  <!-- Firebase Fetch Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCecl3QPW8fkn3ZlfGqyo9VwC_Ar53br70",
+      authDomain: "sha-s-designs.firebaseapp.com",
+      projectId: "sha-s-designs",
+      storageBucket: "sha-s-designs.firebasestorage.app",
+      messagingSenderId: "34957426865",
+      appId: "1:34957426865:web:023ba0243629949b12e290"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadExplorePosts() {
+      const feed = document.getElementById('explore-feed');
+      try {
+        // Pulls posts from newest to oldest
+        const q = query(collection(db, "explore_posts"), orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+          feed.innerHTML = "<p style='text-align: center; color: var(--text-muted);'>No artwork uploaded yet.</p>";
+          return;
+        }
+
+        let html = "";
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const dateStr = data.createdAt ? new Date(data.createdAt.toMillis()).toLocaleDateString() : "Just now";
+          
+          html += `
+            <div class="post-card">
+              <span class="post-date">${dateStr}</span>
+              <h3 class="post-title">${data.title}</h3>
+              <p class="post-content">${data.caption}</p>
+              <img class="post-image" src="${data.imageUrl}" alt="${data.title}">
+            </div>
+          `;
+        });
+        feed.innerHTML = html;
+      } catch (error) {
+        console.error("Firebase Error:", error);
+        feed.innerHTML = "<p style='text-align: center; color: #ef4444;'>Error loading posts. Check database permissions.</p>";
+      }
+    }
+
+    loadExplorePosts();
+  </script>
 </body>
 </html>
