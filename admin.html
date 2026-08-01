@@ -6,28 +6,15 @@
   <title>Secure Admin | Sha's Designs</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .admin-container {
-      max-width: 500px;
-      margin: 60px auto;
-      background-color: var(--card-bg);
-      padding: 30px;
-      border-radius: 12px;
-      border: 1px solid var(--border-color);
-    }
+    .admin-container { max-width: 500px; margin: 60px auto; background-color: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); }
     .form-group { margin-bottom: 20px; }
     label { display: block; margin-bottom: 8px; color: var(--text-muted); font-weight: bold; }
-    input, select, textarea {
-      width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);
-      background-color: var(--bg-color); color: var(--text-main); box-sizing: border-box;
-    }
+    input, select, textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-color); color: var(--text-main); box-sizing: border-box; }
     textarea { min-height: 100px; resize: vertical; }
     #status, #loginStatus { margin-top: 15px; font-weight: bold; text-align: center; color: var(--primary-color); }
     .hidden { display: none !important; }
     #loginScreen { text-align: center; }
-    .logout-btn {
-      background: transparent; color: var(--text-muted); border: none; 
-      text-decoration: underline; cursor: pointer; float: right; margin-top: -40px;
-    }
+    .logout-btn { background: transparent; color: var(--text-muted); border: none; text-decoration: underline; cursor: pointer; float: right; margin-top: -40px; }
   </style>
 </head>
 <body>
@@ -35,12 +22,8 @@
   <!-- LOGIN SCREEN -->
   <div class="admin-container" id="loginScreen">
     <h2 style="color: var(--primary-color); margin-bottom: 20px;">Admin Login</h2>
-    <div class="form-group">
-      <input type="email" id="adminEmail" placeholder="Email">
-    </div>
-    <div class="form-group">
-      <input type="password" id="adminPassword" placeholder="Password">
-    </div>
+    <div class="form-group"><input type="email" id="adminEmail" placeholder="Email"></div>
+    <div class="form-group"><input type="password" id="adminPassword" placeholder="Password"></div>
     <button id="loginBtn" class="btn-primary" style="width: 100%;">Login</button>
     <div id="loginStatus"></div>
   </div>
@@ -59,25 +42,10 @@
       </select>
     </div>
 
-    <div class="form-group">
-      <label>Title / Project Name</label>
-      <input type="text" id="postTitle" placeholder="e.g., Brand Identity Project">
-    </div>
-
-    <div class="form-group" id="captionGroup">
-      <label>Caption / Details</label>
-      <textarea id="postCaption" placeholder="Write something about this design..."></textarea>
-    </div>
-
-    <div class="form-group hidden" id="priceGroup">
-      <label>Price ($)</label>
-      <input type="number" id="postPrice" placeholder="e.g., 15">
-    </div>
-
-    <div class="form-group">
-      <label>Upload Image</label>
-      <input type="file" id="postImage" accept="image/*">
-    </div>
+    <div class="form-group"><label>Title / Project Name</label><input type="text" id="postTitle" placeholder="e.g., Brand Identity Project"></div>
+    <div class="form-group" id="captionGroup"><label>Caption / Details</label><textarea id="postCaption" placeholder="Write something about this design..."></textarea></div>
+    <div class="form-group hidden" id="priceGroup"><label>Price ($)</label><input type="number" id="postPrice" placeholder="e.g., 15"></div>
+    <div class="form-group"><label>Upload Image</label><input type="file" id="postImage" accept="image/*"></div>
 
     <button id="publishBtn" class="btn-primary" style="width: 100%;">Publish</button>
     <div id="status"></div>
@@ -100,8 +68,9 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
-
-    const IMGBB_API_KEY = a941c836ab5e48dacb236993354c1820; 
+    
+    // YOUR INJECTED IMGBB KEY
+    const IMGBB_API_KEY = "a941c836ab5e48dacb236993354c1820"; 
 
     const loginScreen = document.getElementById('loginScreen');
     const uploadScreen = document.getElementById('uploadScreen');
@@ -122,11 +91,20 @@
     document.getElementById('loginBtn').addEventListener('click', async () => {
       const email = document.getElementById('adminEmail').value;
       const pass = document.getElementById('adminPassword').value;
+      const loginStatus = document.getElementById('loginStatus');
+
+      if (!email || !pass) {
+        loginStatus.innerText = "Please enter both email and password.";
+        return;
+      }
+
+      loginStatus.innerText = "Logging in...";
+      
       try {
         await signInWithEmailAndPassword(auth, email, pass);
-        document.getElementById('loginStatus').innerText = "";
+        loginStatus.innerText = "";
       } catch (error) {
-        document.getElementById('loginStatus').innerText = "❌ Incorrect email or password.";
+        loginStatus.innerText = "❌ Incorrect email or password.";
       }
     });
 
@@ -166,7 +144,7 @@
         const formData = new FormData();
         formData.append("image", fileInput.files[0]);
 
-        const imgbbResponse = await fetch(`https://api.imgbb.com/1/upload?key= a941c836ab5e48dacb236993354c1820`, {
+        const imgbbResponse = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
           method: "POST", body: formData
         });
         
