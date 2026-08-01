@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard | Sha's Designs</title>
+  <title>Secure Admin | Sha's Designs</title>
   <link rel="stylesheet" href="style.css">
   <style>
     .admin-container {
@@ -16,20 +16,38 @@
     }
     .form-group { margin-bottom: 20px; }
     label { display: block; margin-bottom: 8px; color: var(--text-muted); font-weight: bold; }
-    input[type="text"], input[type="number"], select, textarea, input[type="file"] {
+    input, select, textarea {
       width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);
       background-color: var(--bg-color); color: var(--text-main); box-sizing: border-box;
     }
     textarea { min-height: 100px; resize: vertical; }
-    #status { margin-top: 15px; font-weight: bold; text-align: center; color: var(--primary-color); }
-    
-    /* Hides the price/caption fields based on selection */
-    .hidden { display: none; }
+    #status, #loginStatus { margin-top: 15px; font-weight: bold; text-align: center; color: var(--primary-color); }
+    .hidden { display: none !important; }
+    #loginScreen { text-align: center; }
+    .logout-btn {
+      background: transparent; color: var(--text-muted); border: none; 
+      text-decoration: underline; cursor: pointer; float: right; margin-top: -40px;
+    }
   </style>
 </head>
 <body>
 
-  <div class="admin-container">
+  <!-- LOGIN SCREEN -->
+  <div class="admin-container" id="loginScreen">
+    <h2 style="color: var(--primary-color); margin-bottom: 20px;">Admin Login</h2>
+    <div class="form-group">
+      <input type="email" id="adminEmail" placeholder="Email">
+    </div>
+    <div class="form-group">
+      <input type="password" id="adminPassword" placeholder="Password">
+    </div>
+    <button id="loginBtn" class="btn-primary" style="width: 100%;">Login</button>
+    <div id="loginStatus"></div>
+  </div>
+
+  <!-- UPLOAD DASHBOARD -->
+  <div class="admin-container hidden" id="uploadScreen">
+    <button id="logoutBtn" class="logout-btn">Logout</button>
     <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 30px;">Studio Dashboard</h2>
     
     <div class="form-group">
@@ -37,21 +55,20 @@
       <select id="uploadType">
         <option value="explore">Explore Page (Art & Posts)</option>
         <option value="shop">Shop Page (Templates for Sale)</option>
+        <option value="portfolio">Hire Me Portfolio (Featured Work)</option>
       </select>
     </div>
 
     <div class="form-group">
-      <label>Title</label>
-      <input type="text" id="postTitle" placeholder="e.g., Pink Twitch Overlay">
+      <label>Title / Project Name</label>
+      <input type="text" id="postTitle" placeholder="e.g., Brand Identity Project">
     </div>
 
-    <!-- Shows for Explore -->
     <div class="form-group" id="captionGroup">
       <label>Caption / Details</label>
       <textarea id="postCaption" placeholder="Write something about this design..."></textarea>
     </div>
 
-    <!-- Shows for Shop -->
     <div class="form-group hidden" id="priceGroup">
       <label>Price ($)</label>
       <input type="number" id="postPrice" placeholder="e.g., 15">
@@ -63,13 +80,13 @@
     </div>
 
     <button id="publishBtn" class="btn-primary" style="width: 100%;">Publish</button>
-    
     <div id="status"></div>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCecl3QPW8fkn3ZlfGqyo9VwC_Ar53br70",
@@ -82,14 +99,38 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
 
-    // PASTE YOUR IMGBB KEY HERE
     const IMGBB_API_KEY = a941c836ab5e48dacb236993354c1820; 
 
-    // UI Logic to switch between Explore/Shop fields
+    const loginScreen = document.getElementById('loginScreen');
+    const uploadScreen = document.getElementById('uploadScreen');
     const uploadType = document.getElementById('uploadType');
     const captionGroup = document.getElementById('captionGroup');
     const priceGroup = document.getElementById('priceGroup');
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loginScreen.classList.add('hidden');
+        uploadScreen.classList.remove('hidden');
+      } else {
+        loginScreen.classList.remove('hidden');
+        uploadScreen.classList.add('hidden');
+      }
+    });
+
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+      const email = document.getElementById('adminEmail').value;
+      const pass = document.getElementById('adminPassword').value;
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        document.getElementById('loginStatus').innerText = "";
+      } catch (error) {
+        document.getElementById('loginStatus').innerText = "❌ Incorrect email or password.";
+      }
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => { signOut(auth); });
 
     uploadType.addEventListener('change', (e) => {
       if (e.target.value === 'shop') {
@@ -101,7 +142,6 @@
       }
     });
 
-    // Upload Logic
     document.getElementById('publishBtn').addEventListener('click', async () => {
       const type = uploadType.value;
       const title = document.getElementById('postTitle').value;
@@ -115,7 +155,7 @@
         return;
       }
       if (type === 'shop' && !price) {
-        status.innerText = "Please enter a price for the shop item.";
+        status.innerText = "Please enter a price.";
         return;
       }
 
@@ -126,37 +166,25 @@
         const formData = new FormData();
         formData.append("image", fileInput.files[0]);
 
-        const imgbbResponse = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-          method: "POST",
-          body: formData
+        const imgbbResponse = await fetch(`https://api.imgbb.com/1/upload?key= a941c836ab5e48dacb236993354c1820`, {
+          method: "POST", body: formData
         });
         
         const imgbbData = await imgbbResponse.json();
         if (!imgbbData.success) throw new Error("Image upload failed.");
 
         const imageUrl = imgbbData.data.url;
-        status.innerText = "Saving data to your database...";
+        status.innerText = "Saving to database...";
 
-        // Save to different Firebase folders based on selection
         if (type === 'explore') {
-          await addDoc(collection(db, "explore_posts"), {
-            title: title,
-            caption: caption,
-            imageUrl: imageUrl,
-            createdAt: serverTimestamp()
-          });
+          await addDoc(collection(db, "explore_posts"), { title, caption, imageUrl, createdAt: serverTimestamp() });
+        } else if (type === 'shop') {
+          await addDoc(collection(db, "shop_items"), { title, price, imageUrl, createdAt: serverTimestamp() });
         } else {
-          await addDoc(collection(db, "shop_items"), {
-            title: title,
-            price: price,
-            imageUrl: imageUrl,
-            createdAt: serverTimestamp()
-          });
+          await addDoc(collection(db, "portfolio_items"), { title, caption, imageUrl, createdAt: serverTimestamp() });
         }
 
         status.innerText = "✅ Published Successfully!";
-        
-        // Clear fields
         document.getElementById('postTitle').value = '';
         document.getElementById('postCaption').value = '';
         document.getElementById('postPrice').value = '';
