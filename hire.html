@@ -30,8 +30,20 @@
       display: block;
       background-color: #374151;
     }
+    .grid-details {
+      padding: 12px;
+    }
+    .grid-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin: 0 0 4px 0;
+    }
+    .grid-caption {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin: 0;
+    }
 
-    /* Clean Business Card Style */
     .contact-card {
       background-color: var(--card-bg);
       padding: 40px 30px;
@@ -40,16 +52,8 @@
       text-align: center;
       margin-bottom: 60px;
     }
-    .contact-card h3 {
-      font-size: 24px;
-      margin-top: 0;
-      margin-bottom: 10px;
-    }
-    .contact-card p {
-      color: var(--text-muted);
-      margin-bottom: 30px;
-      font-size: 16px;
-    }
+    .contact-card h3 { font-size: 24px; margin-top: 0; margin-bottom: 10px; }
+    .contact-card p { color: var(--text-muted); margin-bottom: 30px; font-size: 16px; }
     
     .direct-email-btn {
       display: inline-block;
@@ -64,31 +68,14 @@
       margin-bottom: 30px;
       box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
     }
-    .direct-email-btn:hover {
-      background-color: var(--primary-hover);
-      transform: translateY(-3px);
-    }
+    .direct-email-btn:hover { background-color: var(--primary-hover); transform: translateY(-3px); }
 
-    .social-row {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
+    .social-row { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
     .social-row a {
-      color: var(--text-main);
-      background-color: var(--border-color);
-      padding: 10px 20px;
-      border-radius: 50px;
-      font-size: 14px;
-      font-weight: bold;
-      text-decoration: none;
-      transition: 0.3s;
+      color: var(--text-main); background-color: var(--border-color); padding: 10px 20px;
+      border-radius: 50px; font-size: 14px; font-weight: bold; text-decoration: none; transition: 0.3s;
     }
-    .social-row a:hover {
-      background-color: var(--primary-color);
-      color: white;
-    }
+    .social-row a:hover { background-color: var(--primary-color); color: white; }
   </style>
 </head>
 <body>
@@ -97,12 +84,9 @@
 
   <div class="container">
     
-    <h2 class="page-title">My Work</h2>
-    <div class="masonry-grid">
-      <div class="grid-item"><img src="https://via.placeholder.com/400x600/ec4899/ffffff?text=Design+1" alt="Design 1"></div>
-      <div class="grid-item"><img src="https://via.placeholder.com/400x400/8b5cf6/ffffff?text=Design+2" alt="Design 2"></div>
-      <div class="grid-item"><img src="https://via.placeholder.com/400x700/3b82f6/ffffff?text=Design+3" alt="Design 3"></div>
-      <div class="grid-item"><img src="https://via.placeholder.com/400x500/10b981/ffffff?text=Design+4" alt="Design 4"></div>
+    <h2 class="page-title">Featured Portfolio</h2>
+    <div id="portfolio-grid" class="masonry-grid">
+      <p style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">Loading portfolio...</p>
     </div>
 
     <h2 class="page-title">Let's Work Together</h2>
@@ -110,13 +94,9 @@
       <h3>Ready to start a project?</h3>
       <p>I am currently available for freelance work and custom commissions. Reach out directly below!</p>
       
-      <!-- Big Direct Email Button -->
-      <!-- LATER: Replace with her actual email -->
       <a href="mailto:her-email@gmail.com" class="direct-email-btn">Email Me Directly</a>
       
-      <!-- Social Media Buttons -->
       <div class="social-row">
-        <!-- LATER: Paste her actual links inside the href quotes -->
         <a href="#" target="_blank">Instagram</a>
         <a href="#" target="_blank">X (Twitter)</a>
         <a href="#" target="_blank">Behance</a>
@@ -126,5 +106,56 @@
   </div>
 
   <script src="nav.js"></script>
+
+  <!-- Firebase Fetch Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCecl3QPW8fkn3ZlfGqyo9VwC_Ar53br70",
+      authDomain: "sha-s-designs.firebaseapp.com",
+      projectId: "sha-s-designs",
+      storageBucket: "sha-s-designs.firebasestorage.app",
+      messagingSenderId: "34957426865",
+      appId: "1:34957426865:web:023ba0243629949b12e290"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadPortfolio() {
+      const grid = document.getElementById('portfolio-grid');
+      try {
+        const q = query(collection(db, "portfolio_items"), orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+          grid.innerHTML = "<p style='text-align: center; color: var(--text-muted);'>No featured portfolio items yet.</p>";
+          return;
+        }
+
+        let html = "";
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          html += `
+            <div class="grid-item">
+              <img src="${data.imageUrl}" alt="${data.title}">
+              <div class="grid-details">
+                <h4 class="grid-title">${data.title}</h4>
+                ${data.caption ? `<p class="grid-caption">${data.caption}</p>` : ''}
+              </div>
+            </div>
+          `;
+        });
+        grid.innerHTML = html;
+      } catch (error) {
+        console.error(error);
+        grid.innerHTML = "<p style='text-align: center; color: #ef4444;'>Error loading portfolio.</p>";
+      }
+    }
+
+    loadPortfolio();
+  </script>
 </body>
 </html>
